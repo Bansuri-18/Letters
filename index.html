@@ -395,6 +395,37 @@ h1 {
   background: #fce4e8;
 }
 
+.playlist {
+  max-width: 690px;
+  margin: 56px auto 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.playlist-title {
+  font-size: 24px;
+  font-weight: normal;
+  font-style: italic;
+  color: #bd7188;
+  margin: 0 0 6px;
+}
+
+.playlist-sub {
+  font-size: 14px;
+  font-style: italic;
+  color: #9c7c7d;
+  margin: 0 0 18px;
+}
+
+.playlist iframe {
+  width: 100%;
+  height: 352px;
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 14px 36px #6e464d24;
+}
+
 .footer {
   text-align: center;
   margin-top: 34px;
@@ -467,6 +498,7 @@ h1 {
       </div>
       <div class="env-caption">
         <span class="date">15/10/26</span>
+        <span class="title">The day we met and all this happened</span>
       </div>
     </div>
 
@@ -483,6 +515,7 @@ h1 {
       </div>
       <div class="env-caption">
         <span class="date">18/10/26</span>
+        <span class="title">The day we went out to the beach</span>
       </div>
     </div>
 
@@ -499,6 +532,7 @@ h1 {
       </div>
       <div class="env-caption">
         <span class="date">19/10/26</span>
+        <span class="title">The first of many to come</span>
       </div>
     </div>
 
@@ -509,7 +543,7 @@ h1 {
   </div>
 
   <article class="letter" id="letter1" aria-hidden="true">
-    <div class="letter-date">The day we met and all this happened</div>
+    <div class="letter-date">15/10/26 &middot; The day we met and all this happened</div>
     <h2 class="letter-heading">Hey you,</h2>
 
 
@@ -633,7 +667,7 @@ h1 {
   </article>
 
   <article class="letter" id="letter2" aria-hidden="true">
-    <div class="letter-date">The day we went out to the beach</div>
+    <div class="letter-date">18/10/26 &middot; The day we went out to the beach</div>
     <h2 class="letter-heading">Hey you,</h2>
 
     <p class="opening">
@@ -677,7 +711,7 @@ h1 {
   </article>
 
   <article class="letter" id="letter3" aria-hidden="true">
-    <div class="letter-date">The first of many to come</div>
+    <div class="letter-date">19/10/26 &middot; The first of many to come</div>
     <h2 class="letter-heading">Hey you,</h2>
 
     <p class="opening">
@@ -711,6 +745,16 @@ h1 {
   <button class="reset" id="reset" type="button">
     Fold the letter back up 
   </button>
+
+  <section class="playlist">
+    <h2 class="playlist-title">Songs that remind me of you</h2>
+    <p class="playlist-sub">A tiny playlist of what I’ve been listening to lately…</p>
+    <iframe
+      title="Spotify playlist"
+      src="https://open.spotify.com/embed/playlist/6xAeB8n8law4q4PNq4wB6W?utm_source=generator"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+  </section>
 
   <div class="footer">
     made with a intention
