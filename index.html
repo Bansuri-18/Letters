@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Letter for You</title>
+
+<style>
+:root {
+  --pink: #f7c9d4;
+  --deep-pink: #d9829d;
+  --yellow: #ffe7a0;
+  --cream: #fffaf0;
+  --ink: #604b50;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink);
+}
+
+#app {
+  min-height: 100vh;
+  padding: 34px 18px 60px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    #fff3ee,
+    #fff8d9 50%,
+    #fce2e8
+  );
+}
+
+.sun {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--yellow);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.sun.one {
+  width: 180px;
+  height: 180px;
+  top: -65px;
+  right: -42px;
+}
+
+.sun.two {
+  width: 90px;
+  height: 90px;
+  bottom: 70px;
+  left: -42px;
+  background: var(--pink);
+}
+
+.doodle {
+  position: absolute;
+  font-size: 24px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.d1 {
+  top: 14%;
+  left: 8%;
+}
+
+.d2 {
+  top: 24%;
+  right: 8%;
+}
+
+.d3 {
+  bottom: 13%;
+  right: 12%;
+}
+
+.intro {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  margin: 8px auto 0;
+  max-width: 600px;
+}
+
+.kicker {
+  font-family: Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 10px;
+  color: #a16b79;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: normal;
+  line-height: 1.05;
+  margin: 14px 0 12px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #9c7c7d;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.scene {
+  min-height: 320px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px 56px;
+  position: relative;
+  perspective: 1000px;
+  margin: 8px auto 0;
+  padding: 100px 0 0;
+  z-index: 1;
+}
+
+.envelope-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+}
+
+.env-caption {
+  margin-top: 22px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  color: #8f6a73;
+  line-height: 1.5;
+}
+
+.env-caption .date {
+  display: block;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: #b56f84;
+}
+
+.env-caption .title {
+  display: block;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: #9c7c7d;
+}
+
+.envelope-wrap.active .seal {
+  opacity: 0;
+}
+
+.envelope-wrap {
+  width: 250px;
+  height: 168px;
+  position: relative;
+  cursor: pointer;
+  filter: drop-shadow(0 18px 18px #784e5226);
+  transition: transform 0.35s ease;
+}
+
+.envelope-wrap:hover {
+  transform: translateY(-5px) rotate(-1deg);
+}
+
+.envelope-wrap:focus-visible {
+  outline: 3px solid var(--deep-pink);
+  outline-offset: 10px;
+}
+
+.envelope {
+  position: absolute;
+  inset: 0;
+  border-radius: 7px;
+  background: #f3b8c7;
+}
+
+.envelope:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    145deg,
+    transparent 49.5%,
+    #eaa4b6 50%
+  ), linear-gradient(
+    35deg,
+    #f9d1d8 49.5%,
+    transparent 50%
+  );
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  border-radius: 7px;
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f9d7a1;
+  clip-path: polygon(0 0, 100% 0, 50% 59%);
+  transform-origin: top;
+  transition: transform 0.85s cubic-bezier(.2,.7,.2,1);
+  z-index: 4;
+}
+
+.seal {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--deep-pink);
+  color: white;
+  font-size: 21px;
+  transition: opacity 0.25s, transform 0.4s;
+}
+
+.letter-peek {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 9px;
+  height: 126px;
+  background: var(--cream);
+  border-radius: 3px;
+  transition: transform 0.85s cubic-bezier(.2,.7,.2,1);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b97b8d;
+  font-size: 24px;
+}
+
+.envelope-wrap.open .flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrap.open .letter-peek {
+  transform: translateY(-95px);
+  z-index: 3;
+}
+
+.envelope-wrap.open .seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.3);
+}
+
+.tap-note {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: #a47e84;
+  text-align: center;
+  margin-top: 18px;
+  transition: opacity 0.3s;
+}
+
+.tap-note span {
+  display: inline-block;
+  animation: bob 1.6s infinite ease-in-out;
+}
+
+@keyframes bob {
+  50% { transform: translateY(4px); }
+}
+
+.letter {
+  max-width: 690px;
+  width: 100%;
+  margin: 0 auto;
+  background: rgba(255, 251, 241, 0.97);
+  color: var(--ink);
+  border: 1px solid #f0d7ce;
+  border-radius: 5px;
+  box-shadow: 0 20px 55px #6e464d1f;
+  padding: clamp(25px, 6vw, 58px);
+  position: relative;
+  display: none;
+  line-height: 1.9;
+  font-size: 16px;
+}
+
+.letter.show {
+  display: block;
+  animation: rise 0.8s both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter:before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid #f0d9d1;
+  pointer-events: none;
+}
+
+.letter > * {
+  position: relative;
+}
+
+.letter-date {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a16b79;
+  margin: 0 0 14px;
+}
+
+.letter-heading {
+  text-align: center;
+  margin: 0 0 28px;
+  font-size: 29px;
+  font-weight: normal;
+  color: #bd7188;
+  font-style: italic;
+}
+
+.letter p {
+  margin: 0 0 20px;
+}
+
+.letter .opening {
+  font-size: 19px;
+}
+
+.letter .signoff {
+  text-align: center;
+  font-style: italic;
+  margin-top: 32px;
+  color: #b56f84;
+  font-size: 19px;
+}
+
+.tiny-heart {
+  text-align: center;
+  color: #d58aa0;
+  letter-spacing: 9px;
+  margin-top: 28px;
+}
+
+.reset {
+  display: none;
+  margin: 22px auto 0;
+  border: 1px solid #dca4b1;
+  border-radius: 999px;
+  padding: 11px 18px;
+  background: #fff7f1;
+  color: #9b6273;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.reset.show {
+  display: block;
+}
+
+.reset:hover {
+  background: #fce4e8;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 34px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ad858b;
+}
+
+@media (max-width: 520px) {
+  #app {
+    padding: 25px 14px 42px;
+  }
+
+  .scene {
+    gap: 24px;
+    padding-top: 90px;
+  }
+
+  .letter {
+    font-size: 15px;
+    line-height: 1.85;
+    padding: 30px 25px;
+  }
+
+  .letter-heading {
+    font-size: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<main id="app">
+
+  <div class="sun one"></div>
+  <div class="sun two"></div>
+  <div class="doodle d1">✿</div>
+  <div class="doodle d2">✧</div>
+  <div class="doodle d3">♡</div>
+
+  <header class="intro">
+    <div class="kicker">a little something, just for you</div>
+    <h1>P.S. I used a very old templete so don't judge it</h1>
+    <p class="subtitle">
+      Some things are easier to say when they're written down…
+    </p>
+  </header>
+
+  <section class="scene">
+
+    <div class="envelope-item">
+      <div class="envelope-wrap" data-letter="letter1"
+           role="button" tabindex="0"
+           aria-label="Open the letter from 15/10/26"
+           aria-expanded="false">
+        <div class="envelope">
+          <div class="letter-peek">♡</div>
+          <div class="flap"></div>
+          <div class="seal">♥</div>
+        </div>
+      </div>
+      <div class="env-caption">
+        <span class="date">15/10/26</span>
+      </div>
+    </div>
+
+    <div class="envelope-item">
+      <div class="envelope-wrap" data-letter="letter2"
+           role="button" tabindex="0"
+           aria-label="Open the letter from 18/10/26"
+           aria-expanded="false">
+        <div class="envelope">
+          <div class="letter-peek">♡</div>
+          <div class="flap"></div>
+          <div class="seal">♥</div>
+        </div>
+      </div>
+      <div class="env-caption">
+        <span class="date">18/10/26</span>
+      </div>
+    </div>
+
+    <div class="envelope-item">
+      <div class="envelope-wrap" data-letter="letter3"
+           role="button" tabindex="0"
+           aria-label="Open the letter from 19/10/26"
+           aria-expanded="false">
+        <div class="envelope">
+          <div class="letter-peek">♡</div>
+          <div class="flap"></div>
+          <div class="seal">♥</div>
+        </div>
+      </div>
+      <div class="env-caption">
+        <span class="date">19/10/26</span>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="tap-note" id="tapNote">
+    tap an envelope to open a letter
+  </div>
+
+  <article class="letter" id="letter1" aria-hidden="true">
+    <div class="letter-date">The day we met and all this happened</div>
+    <h2 class="letter-heading">Hey you,</h2>
+
+
+    <p class="opening">
+      Honestly, when I swiped right, I didn’t really think much of it.
+      It was more of a gut feeling… and maybe the fact that I found you
+      a little cute had something to do with it. But then I actually met
+      you, and you were so much better than I’d expected, to be honest.
+    </p>
+
+    <p>
+      Although, I have a feeling the formals might have played a tiny role
+      in that. I’m an absolute sucker for guys in formals, and I’ll admit,
+      I do judge a little based on what someone wears. So, I guess you
+      scored some extra brownie points there. And I definitely wasn’t
+      expecting you to be that tall either! But hey, I guess this means
+      I’ll be wearing my favourite heels around you more often, and you’ll
+      have the very important responsibility of making sure I don’t trip,
+      fall, or embarrass myself. Basically, you’re signing up to be my
+      personal safety net.
+    </p>
+
+    <p>
+      And can we talk about your voice for a second? You have such a
+      lovely, captivating voice. I genuinely feel like I could sit and
+      listen to you talk for hours, even if you were talking about the
+      most random things. There’s just something about it.
+    </p>
+
+    <p>
+      Also, I really appreciated you showing up that day, especially after
+      such a long day of your own. I don’t think I properly expressed it,
+      but it genuinely meant a lot to have you around. I usually go to
+      that place when I’m feeling a little low, and somehow, without even
+      knowing it, you managed to lift my mood that day. You made an
+      already difficult day feel a little lighter, and I think that’s
+      something worth telling you.
+    </p>
+
+    <p>
+      You also have this really bubbly, endearing personality that I quite
+      like. I’m genuinely impressed by how straightforward you are about
+      things, and I love how you seem to balance being mature and serious
+      when you need to be with this playful, almost childlike side of you.
+      It’s honestly quite refreshing.
+    </p>
+
+    <p>
+      And I guess this is where I get a little vulnerable, so bear with me
+      for a second.
+    </p>
+
+    <p>
+      I’ve been told quite a few times that I’m not the easiest person to
+      get to know because I take my time opening up to people. Trusting
+      someone and genuinely connecting with them doesn’t come very easily
+      to me. And honestly, that’s pretty much how things have been for me
+      here so far.
+    </p>
+
+    <p>
+      I’ve gone out with a few people before you (four, to be precise),
+      but I always felt like I was holding a little part of myself back.
+      I’d think before I spoke, carefully choose what to say, ask all the
+      polite little questions, give the appropriate answers, and wear
+      that picture-perfect version of myself. You know, the fake smiles,
+      the perfectly courteous conversations, the whole I have my life
+      together and am a perfectly composed human being act.
+    </p>
+
+    <p>
+      But with you, it felt different. I wasn’t constantly thinking about
+      how I came across or trying to make sure I said all the right
+      things. I could just be myself. No carefully curated personality,
+      no pretending, no pressure to be the perfect version of me. Just
+      me, being me.
+    </p>
+
+    <p>
+      And I think that’s what I like most about being around you so far.
+      You make it feel okay to let my inner child out, to be a little
+      silly, a little goofy, and just exist without overthinking every
+      little thing. I don’t feel like I have to hide that side of myself
+      or worry that it’s too much. And honestly, finding someone who
+      makes me feel that comfortable, even this early on, is quite
+      special.
+    </p>
+
+    <p>
+      I genuinely didn’t want to leave that night. I didn’t even realise
+      how quickly the time had passed until it was time to go. It’s funny
+      how some conversations can make hours feel like minutes, isn’t it?
+    </p>
+
+    <p>
+      And, well… you’ve been on my mind ever since. I find myself wanting
+      to know more about you, discover all the little things that make
+      you who you are, and see where this goes. I’m curious about us,
+      about how we might fit into each other’s lives, and about what
+      could come out of this if we give it a chance.
+    </p>
+
+    <p>
+      Gosh, why does this sound like I’m halfway through confessing my
+      feelings to you? I swear I wasn’t planning to get this mushy, but
+      apparently, you bring that side out of me too.
+    </p>
+
+    <p>
+      Anyway, I’ll stop before I embarrass myself any further. Let’s just
+      take things as they come, get to know each other a little more, and
+      see where this little thing between us takes us.
+    </p>
+
+    <p class="signoff">
+      But for now, I’ll just say this:<br>
+      <strong>I’m really glad I swiped right.</strong>
+    </p>
+
+    <div class="tiny-heart">♡ &nbsp; ✿ &nbsp; ♡</div>
+  </article>
+
+  <article class="letter" id="letter2" aria-hidden="true">
+    <div class="letter-date">The day we went out to the beach</div>
+    <h2 class="letter-heading">Hey you,</h2>
+
+    <p class="opening">
+      Today honestly felt like something out of a dream. The beach, our little walks, holding hands, the fireworks, and even getting on the wrong bus. Everything felt so surreal that I still can’t quite believe it happened. And okay, I admit, I was a little excited to see your reaction to my outfit, which is why I didn't mention anything. I guess it was worth it.
+    </p>
+
+    <p>
+      I’ve always loved that beach, but today, for the first time, my attention was on something else entirely. You. And when you held my hand, it just felt right. I can’t really explain it, but even though I’m a little scared of the water, walking beside you with my hand in yours made everything feel okay. I was so giddy and shy the entire time, barely able to look into your eyes because I was too busy blushing and getting flustered. You genuinely made me feel like a teenager crushing on her favourite fictional character all over again.
+    </p>
+
+    <p>
+      You’re incredibly handsome, and I could probably go on about your eyes and your smile for hours, but what really gets me is the person you are. You’re so kind and caring, and there’s something about the way you speak that draws me in. Sometimes, I find it genuinely difficult to look away from you.
+    </p>
+
+    <p>
+      And when you told me that whenever you helped someone and looked back at me, I was always smiling at you, it made me smile all over again. Because how could I not? There I was, watching you be your lovely, thoughtful self, feeling ridiculously lucky that I get to call you mine.
+    </p>
+
+    <p>
+      I think that’s what makes today so special to me. It wasn’t just the pretty beach or the fireworks; it was getting to experience all those little moments with you. The kind of moments I know I’ll look back on and smile about for a very long time.
+    </p>
+
+    <p>
+      Gosh, I’m getting so mushy. I’ve never been very good at talking about my feelings, so I end up writing them instead, hoping that someday I’ll find the courage to say all of this while looking you in the eyes. But how am I supposed to look directly at the sun when it’s the very thing making my world feel warmer?
+    </p>
+
+    <p>
+      It reminds me of this quote I once read about someone who spent so long looking away from the sun that they only realised its beauty when it was setting. And I think there’s something beautiful and heartbreaking about that. I never want to take what we have for granted or wait until a moment is passing to realise how precious it is. I want to appreciate you, all the little things about you, and the moments we get to share while we have them.
+    </p>
+
+    <p>
+      So, I hope you don’t mind if I sometimes struggle to put my feelings into words or take a little longer to open up. It’s always been difficult for me, but what I feel is genuine, even when I don’t know how to express it.
+    </p>
+
+    <p class="signoff">
+      And if I’m being honest, out of all the possibilities of where this could go,<br>
+      <strong>I really, really hope that the person I end up with is you.</strong>
+    </p>
+
+    <div class="tiny-heart">♡ &nbsp; ✿ &nbsp; ♡</div>
+  </article>
+
+  <article class="letter" id="letter3" aria-hidden="true">
+    <div class="letter-date">The first of many to come</div>
+    <h2 class="letter-heading">Hey you,</h2>
+
+    <p class="opening">
+      Well, today was definitely unexpected, but I guess, like you said, that’s the beauty of it. It also made me realise how much we still have to learn about each other. I really want us to sit down sometime and have a little Q&amp;A session, maybe 21 questions or something, just to speedrun through all the things I’ve missed about your life. I know I’ll probably hesitate to ask some things, but I genuinely am curious about you.
+    </p>
+
+    <p>
+      Now, coming to today… first of all, you looked really good. But then again, when do you not? And you in your work mode? God, don’t even get me started. If I hadn’t distracted myself by working on my own stuff, I genuinely don’t know how I would’ve survived. You make me so ridiculously flustered and nervous, it’s actually unfair. And it’s not that I don’t love how you are around me, but seeing that side of you today just made me like you even more.
+    </p>
+
+    <p>
+      Sometimes, I genuinely feel like I’ve lucked out with you. You seem to have so many of the things I’ve always wanted in a partner, and then somehow, there’s even more to you. And thank you for the little chocolate surprise! Even if it wasn’t my favourite, the thought behind it was really sweet, and it made me happy that you thought of me.
+    </p>
+
+    <p>
+      I guess it’s becoming pretty obvious that you’re going to be the romantic one between us. Sometimes I feel a little guilty because I can be so stoic and practical while you’re so open with your feelings. But I think I’m just so used to keeping things to myself that expressing them doesn’t come naturally to me. I’m still figuring it out, so please bear with me a little. Though, honestly, my body seems to have figured things out before my brain has, because it clearly has a soft spot for you.
+    </p>
+
+    <p>
+      And when you told me you liked me, I genuinely froze. I wasn’t expecting it, especially when I’m still not entirely sure what I’m supposed to call you. But don’t get me wrong, I definitely didn’t mind hearing it. Maybe I liked it a little more than I’m willing to admit.
+    </p>
+
+    <p class="signoff">
+      And lastly, going over to your place was so spontaneous!<br>
+      <strong>Next time, we should probably plan things a little better so I can stay longer.</strong>
+    </p>
+
+    <div class="tiny-heart">♡ &nbsp; ✿ &nbsp; ♡</div>
+  </article>
+
+  <button class="reset" id="reset" type="button">
+    Fold the letter back up 
+  </button>
+
+  <div class="footer">
+    made with a intention
+  </div>
+
+</main>
+
+<script>
+const envelopes = document.querySelectorAll(".envelope-wrap");
+const letters = document.querySelectorAll(".letter");
+const tapNote = document.getElementById("tapNote");
+const reset = document.getElementById("reset");
+let timer = null;
+
+function closeAll() {
+  clearTimeout(timer);
+  letters.forEach(l => {
+    l.classList.remove("show");
+    l.setAttribute("aria-hidden", "true");
+  });
+  envelopes.forEach(e => {
+    e.classList.remove("open");
+    e.setAttribute("aria-expanded", "false");
+  });
+  reset.classList.remove("show");
+}
+
+function openLetter(env) {
+  if (env.classList.contains("open")) return;
+  closeAll();
+
+  const letter = document.getElementById(env.dataset.letter);
+  env.classList.add("open");
+  env.setAttribute("aria-expanded", "true");
+  tapNote.style.opacity = "0";
+
+  timer = window.setTimeout(() => {
+    letter.classList.add("show");
+    letter.setAttribute("aria-hidden", "false");
+    reset.classList.add("show");
+    letter.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 520);
+}
+
+function closeLetter() {
+  closeAll();
+  tapNote.style.opacity = "1";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+envelopes.forEach(env => {
+  env.addEventListener("click", () => openLetter(env));
+  env.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openLetter(env);
+    }
+  });
+});
+
+reset.addEventListener("click", closeLetter);
+</script>
+
+</body>
+</html>
