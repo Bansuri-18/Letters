@@ -535,6 +535,619 @@ h1 {
     transition-duration: 0.01ms !important;
   }
 }
+
+(function () {
+  var style = document.createElement("style");
+  style.textContent = `/* ================= QUESTION FLIP CARDS ================= */
+
+.questions {
+  max-width: 690px;
+  margin: 64px auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.q-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: normal;
+  font-style: italic;
+  color: #bd7188;
+  margin: 0 0 6px;
+}
+
+.q-sub {
+  text-align: center;
+  font-size: 14px;
+  font-style: italic;
+  color: #9c7c7d;
+  margin: 0 0 22px;
+  line-height: 1.6;
+}
+
+.flip-stage {
+  position: relative;
+}
+
+.flip {
+  display: none;
+  perspective: 1400px;
+}
+
+.flip.current {
+  display: block;
+  animation: rise 0.55s both;
+}
+
+.flip-inner {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(.3,.7,.2,1);
+}
+
+.flip.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.face {
+  grid-area: 1 / 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  background: rgba(255, 251, 241, 0.97);
+  border: 1px solid #f0d7ce;
+  border-radius: 5px;
+  box-shadow: 0 20px 55px #6e464d1f;
+  padding: clamp(24px, 5vw, 40px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: visibility 0s linear 0.4s;
+}
+
+.face:before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid #f0d9d1;
+  pointer-events: none;
+}
+
+.face > * {
+  position: relative;
+}
+
+.face.back {
+  transform: rotateY(180deg);
+  background: #fff4f6;
+  visibility: hidden;
+}
+
+.flip.flipped .face.front {
+  visibility: hidden;
+}
+
+.flip.flipped .face.back {
+  visibility: visible;
+}
+
+.q-num {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a16b79;
+  font-weight: bold;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+.q-text {
+  font-size: 20px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+  text-align: center;
+  color: var(--ink);
+}
+
+.q-input {
+  width: 100%;
+  min-height: 110px;
+  resize: vertical;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: #fffdf8;
+  border: 1px solid #e8c9cf;
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.q-input:focus {
+  outline: 2px solid var(--deep-pink);
+  outline-offset: 1px;
+}
+
+.q-input[readonly] {
+  background: #fbf3ee;
+  color: #8f6a73;
+}
+
+.q-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 22px;
+  background: var(--deep-pink);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn:hover {
+  background: #c9708d;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
+}
+
+.btn.ghost {
+  background: #fff7f1;
+  color: #9b6273;
+  border: 1px solid #dca4b1;
+}
+
+.btn.ghost:hover {
+  background: #fce4e8;
+}
+
+.q-status {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin: 12px 0 0;
+  min-height: 1.2em;
+  color: #b56f84;
+}
+
+.q-status.error {
+  color: #b04a62;
+}
+
+.q-label {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 0 0 4px;
+}
+
+.q-label.you {
+  color: #9c7c7d;
+}
+
+.q-label.me {
+  color: #bd7188;
+}
+
+.q-yours {
+  font-size: 14px;
+  line-height: 1.7;
+  font-style: italic;
+  color: #8f6a73;
+  margin: 0 0 18px;
+  padding-left: 12px;
+  border-left: 3px solid #f0d7ce;
+  white-space: pre-wrap;
+}
+
+.q-mine {
+  font-size: 16px;
+  line-height: 1.85;
+  margin: 0;
+  padding: 14px 16px;
+  background: #fde9ee;
+  border-radius: 6px;
+  color: var(--ink);
+}
+
+.q-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid #dca4b1;
+  background: #fff7f1;
+  color: #9b6273;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.arrow:hover:not(:disabled) {
+  background: #fce4e8;
+  transform: translateY(-2px);
+}
+
+.arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.arrow:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--deep-pink);
+  outline-offset: 3px;
+}
+
+.q-counter {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #a16b79;
+  min-width: 120px;
+  text-align: center;
+}
+
+.q-counter small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b9979d;
+}
+
+.q-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.q-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid #dca4b1;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.q-dot.answered {
+  background: #e8b3c1;
+}
+
+.q-dot.active {
+  background: var(--deep-pink);
+  border-color: var(--deep-pink);
+  transform: scale(1.3);
+}
+
+.q-thanks {
+  text-align: center;
+  margin-top: 22px;
+  font-style: italic;
+  color: #b56f84;
+  font-size: 17px;
+  display: none;
+}
+
+.q-thanks.show {
+  display: block;
+  animation: rise 0.8s both;
+}
+
+/* ================= END QUESTION CARDS ================= */`;
+  document.head.appendChild(style);
+
+  var wrap = document.createElement("div");
+  wrap.innerHTML = `<section class="questions" id="questions" aria-labelledby="qTitle">
+    <h2 class="q-title" id="qTitle">A few questions for you</h2>
+    <p class="q-sub">
+      Answer honestly. Once you send it, flip the card to see what I said too.
+    </p>
+
+    <div class="flip-stage" id="flipStage"></div>
+
+    <div class="q-nav">
+      <button class="arrow" id="prevQ" type="button" aria-label="Previous question">‹</button>
+      <div class="q-counter" id="qCounter" aria-live="polite"></div>
+      <button class="arrow" id="nextQ" type="button" aria-label="Next question">›</button>
+    </div>
+
+    <div class="q-dots" id="qDots"></div>
+
+    <p class="q-thanks" id="qThanks">
+      You answered everything. Now I want to hear these out loud. ♡
+    </p>
+  </section>`;
+  var section = wrap.firstElementChild;
+  var footer = document.querySelector(".footer");
+  if (footer && footer.parentNode) {
+    footer.parentNode.insertBefore(section, footer);
+  } else {
+    (document.getElementById("app") || document.body).appendChild(section);
+  }
+})();
+
+/* ================= QUESTION FLIP CARDS ================= */
+(function () {
+  const EMAIL = "vanshu1802@gmail.com";
+  const ENDPOINT = "https://formsubmit.co/ajax/" + EMAIL;
+  const STORE_KEY = "qcards-answers-v2";
+
+  const QA = [
+    {
+      q: "What's one thing you'd really like us to do together, something simple that you'd enjoy?",
+      a: "I'd really like us to have a quiet night in sometime. We could watch a movie, talk about absolutely anything, or just spend time together without having to do anything in particular. I think I'd enjoy that quite a bit."
+    },
+    {
+      q: "What's something you're looking forward to next year?",
+      a: "My convocation, definitely! I'm quite excited about finally getting to attend it."
+    },
+    {
+      q: "When you have a particularly bad day, what do you usually need from your partner? Someone to listen, distract you, or give you a little space?",
+      a: "I think I'd prefer someone who just listens. I don't necessarily need solutions or advice every time; sometimes, I just want to be able to talk about what's on my mind."
+    },
+    {
+      q: "What's a date you've been wanting to go on with me?",
+      a: "I'd love for us to visit MacRitchie Reservoir one morning. A nice morning walk, a little bit of exploring and just spending time together. I think that would make for a lovely date."
+    },
+    {
+      q: "Apart from trust, what do you think makes a relationship meaningful?",
+      a: "Friendship, without a doubt. I want to be able to look at my partner and see a friend in him too. Someone I can laugh with, talk to about the most random things, share little everyday moments with and genuinely enjoy being around."
+    },
+    {
+      q: "What's something you've come to appreciate about having your own life outside a relationship?",
+      a: "I think it's important that a relationship isn't the only thing going on in either person's life. We should both have our own ambitions, friendships, interests and experiences. Of course, I'd love for my partner to know about the people and things that matter to me, but I don't think we necessarily need to be involved in every single aspect of each other's lives."
+    },
+    {
+      q: "Do you ever worry that when I ask you to come over, it's because I have a particular expectation in mind?",
+      a: "Not at all! I usually just ask you over because I miss having you around. You could be sitting beside me doing your own work, and I'd still be happy. There's something comforting about simply having your presence around, even when we're not actively doing anything together."
+    },
+    {
+      q: "What kind of qualities do you generally find attractive in someone?",
+      a: "I've always found myself drawn to men who can naturally command attention in a room. Someone who's comfortable in the spotlight, confident enough to own it and isn't afraid to put himself out there."
+    },
+    {
+      q: "What's your perspective on people remaining friends with their exes?",
+      a: "Personally, I don't think I'd be able to remain friends with my exes. But I suppose, in general, it depends on the relationship they shared, how things ended and whether both people have genuinely moved on."
+    },
+    {
+      q: "Is there something you've experienced in a past relationship that you'd approach differently in the future?",
+      a: "I think I'd want to be with someone who's genuinely ambitious and driven. It's something that matters quite a bit to me because I believe a person's outlook towards growth and hard work can influence the relationship in many ways. In the past, I've been with people who weren't particularly driven, albeit for different reasons, and I've realised how important shared ambition is to me."
+    },
+    {
+      q: "What's one of the most thoughtful or romantic gestures someone's made for you?",
+      a: "I've been surprised quite a few times, actually. One particular memory that stands out is when I travelled alone for my first hackathon. He showed up to cheer me on, but made sure to head back before I did so I could spend time with the other people there. Then, when I returned, he showed up at the airport at around 1 AM with flowers and food to congratulate me. I think it was the thoughtfulness of it all that made it so memorable."
+    },
+    {
+      q: "Is there a particular criticism or comment that took you a long time to make peace with?",
+      a: "It took me quite a few years to become comfortable with the way I look. Things like my hair, skin tone and body shape were things I struggled to come to terms with for a long time. It's taken time, but I've learnt to be kinder to myself about them."
+    },
+    {
+      q: "Do you have any particular deal-breakers in a relationship?",
+      a: "I wouldn't say I have a very specific checklist of deal-breakers. But there are certain habits and behaviours that just don't sit well with me. Sometimes, it's the little things that give me the ick!"
+    },
+    {
+      q: "Who among your friends would you say knows you the best?",
+      a: "My best friend, Bristti. She probably knows me better than anyone else. There's very little I have to explain to her; she just gets me."
+    },
+    {
+      q: "Do you have a bucket list? What's the most adventurous thing you've ticked off it so far?",
+      a: "I do, but I think I'll save this one for when we meet. It's a story I'd much rather tell you in person. :P"
+    }
+  ];
+
+  // ---- saved answers (a refresh won't lose his progress) ----
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { saved = {}; }
+  function persist() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (e) {}
+  }
+
+  const stage = document.getElementById("flipStage");
+  const prevBtn = document.getElementById("prevQ");
+  const nextBtn = document.getElementById("nextQ");
+  const counter = document.getElementById("qCounter");
+  const dotsBox = document.getElementById("qDots");
+  const thanks = document.getElementById("qThanks");
+
+  const cards = [];
+  const dots = [];
+  let current = 0;
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  function setFlipped(card, flipped) {
+    card.root.classList.toggle("flipped", flipped);
+    card.front.setAttribute("aria-hidden", flipped ? "true" : "false");
+    card.back.setAttribute("aria-hidden", flipped ? "false" : "true");
+  }
+
+  function markAnswered(card, i) {
+    card.input.value = saved[i];
+    card.input.readOnly = true;
+    card.sendBtn.style.display = "none";
+    card.flipBtn.style.display = "";
+    card.yours.textContent = saved[i];
+    card.status.className = "q-status";
+    card.status.textContent = "Sent ♡ Now flip the card to see my answer.";
+    dots[i].classList.add("answered");
+  }
+
+  function refreshUI() {
+    const n = Object.keys(saved).length;
+    counter.innerHTML = "";
+    counter.appendChild(document.createTextNode((current + 1) + " / " + QA.length));
+    counter.appendChild(el("small", "", n + " answered"));
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === QA.length - 1;
+    dots.forEach((d, idx) => d.classList.toggle("active", idx === current));
+    thanks.classList.toggle("show", n === QA.length);
+  }
+
+  function show(i) {
+    if (i < 0 || i >= QA.length) return;
+    cards[current].root.classList.remove("current");
+    current = i;
+    cards[current].root.classList.add("current");
+    refreshUI();
+  }
+
+  async function send(i) {
+    const card = cards[i];
+    const answer = card.input.value.trim();
+    if (!answer) {
+      card.status.className = "q-status error";
+      card.status.textContent = "Write something first, even a little. ♡";
+      return;
+    }
+    card.status.className = "q-status";
+    card.status.textContent = "";
+    card.sendBtn.disabled = true;
+    card.sendBtn.textContent = "Sending…";
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          _subject: "Answer to question " + (i + 1) + " of " + QA.length,
+          _template: "table",
+          _captcha: "false",
+          _honey: "",
+          question: QA[i].q,
+          answer: answer
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || String(data.success) === "false") {
+        throw new Error(data.message || "Request failed");
+      }
+      saved[i] = answer;
+      persist();
+      markAnswered(card, i);
+      refreshUI();
+    } catch (err) {
+      card.status.className = "q-status error";
+      card.status.textContent = "Couldn't send that one. Check your connection and try again. Your answer is still here.";
+      card.sendBtn.disabled = false;
+      card.sendBtn.textContent = "Send my answer ♡";
+    }
+  }
+
+  QA.forEach(function (item, i) {
+    const root = el("div", "flip");
+    const inner = el("div", "flip-inner");
+
+    // ----- front: question + answer box -----
+    const front = el("div", "face front");
+    front.appendChild(el("div", "q-num", "Question " + (i + 1)));
+    front.appendChild(el("p", "q-text", item.q));
+
+    const input = el("textarea", "q-input");
+    input.placeholder = "Type your answer here…";
+    input.setAttribute("aria-label", "Your answer to question " + (i + 1));
+    front.appendChild(input);
+
+    const actions = el("div", "q-actions");
+    const sendBtn = el("button", "btn", "Send my answer ♡");
+    sendBtn.type = "button";
+    const flipBtn = el("button", "btn", "Flip to see my answer ↻");
+    flipBtn.type = "button";
+    flipBtn.style.display = "none";
+    actions.appendChild(sendBtn);
+    actions.appendChild(flipBtn);
+    front.appendChild(actions);
+
+    const status = el("p", "q-status");
+    status.setAttribute("role", "status");
+    front.appendChild(status);
+
+    // ----- back: his answer + mine -----
+    const back = el("div", "face back");
+    back.appendChild(el("div", "q-num", "Question " + (i + 1)));
+    back.appendChild(el("p", "q-text", item.q));
+    back.appendChild(el("div", "q-label you", "Your answer"));
+    const yours = el("p", "q-yours");
+    back.appendChild(yours);
+    back.appendChild(el("div", "q-label me", "My answer"));
+    back.appendChild(el("p", "q-mine", item.a));
+    const backActions = el("div", "q-actions");
+    const backBtn = el("button", "btn ghost", "↻ Flip back");
+    backBtn.type = "button";
+    backActions.appendChild(backBtn);
+    back.appendChild(backActions);
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    root.appendChild(inner);
+    stage.appendChild(root);
+
+    const card = { root, front, back, input, sendBtn, flipBtn, status, yours };
+    cards.push(card);
+    setFlipped(card, false);
+
+    sendBtn.addEventListener("click", () => send(i));
+    flipBtn.addEventListener("click", () => setFlipped(card, true));
+    backBtn.addEventListener("click", () => setFlipped(card, false));
+
+    const dot = el("button", "q-dot");
+    dot.type = "button";
+    dot.setAttribute("aria-label", "Go to question " + (i + 1));
+    dot.addEventListener("click", () => show(i));
+    dotsBox.appendChild(dot);
+    dots.push(dot);
+
+    if (saved[i]) markAnswered(card, i);
+  });
+
+  prevBtn.addEventListener("click", () => show(current - 1));
+  nextBtn.addEventListener("click", () => show(current + 1));
+
+  // start on the first unanswered question
+  let start = 0;
+  while (start < QA.length - 1 && saved[start]) start++;
+  current = start;
+  cards[current].root.classList.add("current");
+  refreshUI();
+})();
+  
+  
 </style>
 </head>
 
