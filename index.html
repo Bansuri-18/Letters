@@ -64,52 +64,24 @@ h1{font-size:clamp(32px,6vw,52px);font-weight:normal;line-height:1.05;margin:14p
 .flower-tip p{margin:0}
 .footer{text-align:center;margin-top:40px;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#ad858b}
 
-/* ===== question flip cards ===== */
-.questions{max-width:690px;margin:64px auto 0;position:relative;z-index:1}
-.q-title{text-align:center;font-size:26px;font-weight:normal;font-style:italic;color:#bd7188;margin:0 0 6px}
-.q-sub{text-align:center;font-size:14px;font-style:italic;color:#9c7c7d;margin:0 0 22px;line-height:1.6}
-.flip-stage{position:relative}
-.flip{display:none;perspective:1400px}
-.flip.current{display:block;animation:rise .55s both}
-.flip-inner{display:grid;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.3,.7,.2,1)}
-.flip.flipped .flip-inner{transform:rotateY(180deg)}
-.face{grid-area:1/1;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:rgba(255,251,241,.97);border:1px solid #f0d7ce;border-radius:5px;box-shadow:0 20px 55px #6e464d1f;padding:clamp(24px,5vw,40px);position:relative;display:flex;flex-direction:column;transition:visibility 0s linear .4s}
-.face:before{content:"";position:absolute;inset:8px;border:1px solid #f0d9d1;pointer-events:none}
-.face>*{position:relative}
-.face.back{transform:rotateY(180deg);background:#fff4f6;visibility:hidden}
-.flip.flipped .face.front{visibility:hidden}
-.flip.flipped .face.back{visibility:visible}
-.q-num{font-family:Arial,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#a16b79;font-weight:bold;margin:0 0 10px;text-align:center}
-.q-text{font-size:20px;line-height:1.6;margin:0 0 18px;text-align:center;color:var(--ink)}
-.q-input{width:100%;min-height:110px;resize:vertical;font-family:Georgia,"Times New Roman",serif;font-size:15px;line-height:1.7;color:var(--ink);background:#fffdf8;border:1px solid #e8c9cf;border-radius:6px;padding:12px 14px}
-.q-input:focus{outline:2px solid var(--deep-pink);outline-offset:1px}
-.q-input[readonly]{background:#fbf3ee;color:#8f6a73}
-.q-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
-.btn{border:0;border-radius:999px;padding:11px 22px;background:var(--deep-pink);color:#fff;font-family:Arial,sans-serif;font-size:12px;letter-spacing:.06em;cursor:pointer;transition:transform .2s,background .2s}
-.btn:hover{background:#c9708d;transform:translateY(-1px)}
-.btn:disabled{opacity:.6;cursor:wait;transform:none}
-.btn.ghost{background:#fff7f1;color:#9b6273;border:1px solid #dca4b1}
-.btn.ghost:hover{background:#fce4e8}
-.q-status{font-family:Arial,sans-serif;font-size:12px;text-align:center;margin:12px 0 0;min-height:1.2em;color:#b56f84}
-.q-status.error{color:#b04a62}
-.q-label{font-family:Arial,sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:bold;margin:0 0 4px}
-.q-label.you{color:#9c7c7d}.q-label.me{color:#bd7188}
-.q-yours{font-size:14px;line-height:1.7;font-style:italic;color:#8f6a73;margin:0 0 18px;padding-left:12px;border-left:3px solid #f0d7ce;white-space:pre-wrap}
-.q-mine{font-size:16px;line-height:1.85;margin:0;padding:14px 16px;background:#fde9ee;border-radius:6px;color:var(--ink)}
-.q-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:26px}
-.arrow{width:46px;height:46px;border-radius:50%;border:1px solid #dca4b1;background:#fff7f1;color:#9b6273;font-size:22px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:background .2s,transform .2s}
-.arrow:hover:not(:disabled){background:#fce4e8;transform:translateY(-2px)}
-.arrow:disabled{opacity:.35;cursor:default}
-.arrow:focus-visible,.btn:focus-visible{outline:3px solid var(--deep-pink);outline-offset:3px}
-.q-counter{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.14em;color:#a16b79;min-width:120px;text-align:center}
-.q-counter small{display:block;margin-top:4px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#b9979d}
-.q-dots{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:16px}
-.q-dot{width:9px;height:9px;border-radius:50%;border:1px solid #dca4b1;background:transparent;padding:0;cursor:pointer}
-.q-dot.answered{background:#e8b3c1}
-.q-dot.active{background:var(--deep-pink);border-color:var(--deep-pink);transform:scale(1.3)}
-.q-thanks{text-align:center;margin-top:22px;font-style:italic;color:#b56f84;font-size:17px;display:none}
-.q-thanks.show{display:block;animation:rise .8s both}
-
+/* ===== movie quote pop-ups ===== */
+.quote-pop{position:fixed;z-index:40;width:min(320px,calc(100vw - 32px));background:rgba(255,250,240,.97);border:1px solid #f0d7ce;border-radius:14px;box-shadow:0 16px 40px #6e464d33;padding:18px 22px 16px;opacity:0;transform:translateY(10px) scale(.98);pointer-events:none;transition:opacity .6s ease,transform .6s ease}
+.quote-pop.show{opacity:1;transform:none;pointer-events:auto}
+.quote-pop.pos-tl{top:18px;left:18px}
+.quote-pop.pos-tr{top:18px;right:18px}
+.quote-pop.pos-bl{bottom:18px;left:18px}
+.quote-pop.pos-br{bottom:18px;right:18px}
+.quote-pop.pos-ml{top:40%;left:18px}
+.quote-pop.pos-mr{top:40%;right:18px}
+.quote-text{margin:0 0 8px;font-size:16px;line-height:1.6;font-style:italic;color:var(--ink)}
+.quote-film{margin:0;font-family:Arial,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b56f84}
+.quote-close{position:absolute;top:6px;right:10px;border:0;background:none;color:#b9979d;font-size:20px;line-height:1;cursor:pointer;padding:2px 6px}
+.quote-close:hover{color:#9b6273}
+.quote-close:focus-visible{outline:2px solid var(--deep-pink);border-radius:6px}
+@media (max-width:520px){
+  .quote-pop{left:16px !important;right:16px !important;top:auto !important;bottom:16px !important;width:auto}
+}  
+   
 @media (max-width:520px){
   #app{padding:25px 14px 42px}
   .garden-section{margin:44px -14px -42px}
@@ -183,6 +155,13 @@ h1{font-size:clamp(32px,6vw,52px);font-weight:normal;line-height:1.05;margin:14p
     </div>
         <div class="envelope-item">
       <div class="envelope-wrap" data-letter="letter8" role="button" tabindex="0" aria-label="Open the letter from 17/11/26 (Confusion)" aria-expanded="false">
+        <div class="envelope"><div class="letter-peek">♡</div><div class="flap"></div><div class="seal">♥</div></div>
+      </div>
+      <div class="env-caption"><span class="date">17/11/26</span></div>
+    </div>
+
+     <div class="envelope-item">
+      <div class="envelope-wrap" data-letter="letter9" role="button" tabindex="0" aria-label="Open the letter from 17/11/26" aria-expanded="false">
         <div class="envelope"><div class="letter-peek">♡</div><div class="flap"></div><div class="seal">♥</div></div>
       </div>
       <div class="env-caption"><span class="date">17/11/26</span></div>
@@ -319,21 +298,29 @@ h1{font-size:clamp(32px,6vw,52px);font-weight:normal;line-height:1.05;margin:14p
     <div class="tiny-heart">♡ &nbsp; ✿ &nbsp; ♡</div>
 </article>
 
-  <button class="reset" id="reset" type="button">Fold the letter back up</button>
+  <article class="letter" id="letter9" aria-hidden="true">
+    <div class="letter-date">Yearning</div>
+    <h2 class="letter-heading">Hey you,</h2>
+    <p class="opening">Why the fuck am I unable to stop thinking about you?</p>
+    <p>Why do I miss your voice so much? Why am I missing your touch? Why is it that every time I take a break, the first thing I do is check my phone to see if you've texted or called? Why is it that I find myself looking for your name every time I unlock my phone, almost instinctively, as though some part of me is always waiting for you?</p>
+    <p>Why did I make up such a stupid excuse to see you today, only to find myself unable to say that I wanted to stay longer? Why is it that when I look at my bed, it feels empty in a way I cannot quite put into words?</p>
+    <p>Why have I suddenly been writing more than I have in the entire past month? Why can't I seem to get you out of my head? Why am I so angry with you and yet yearning for you at the exact same time?</p>
+    <p>And why, despite having so much to say, am I finding it so fucking difficult to tell you any of it?</p>
+    <p>Am I scared of seeing your reaction to my feelings, knowing that you don't want this to become too serious? Am I still hurt by the fact that you asked for an expiration date to this relationship before we had even given it a chance to begin? Is that why I keep avoiding this conversation? Because I don't want to open myself up to someone who seems to be looking for the ending before we've even had the beginning?</p>
+    <p>I genuinely don't know what to do.</p>
+    <p>I cannot figure out whether I like you just enough to take a chance, see where things go, and let whatever happens happen. Or whether I like you so much that the thought of entering something with a predetermined end feels unbearable. Perhaps I don't want a limited-time version of something that I might actually want to give my all to.</p>
+    <p>I feel like calling you, yelling at you, demanding answers, and telling you just how much you've been occupying my thoughts. But then I remind myself that I don't think I have the right to do any of that.</p>
+    <p>I want to call you over, sit on your lap, and just talk. About absolutely nothing and everything. I want to have you around without needing a reason or an excuse. But somehow, even that feels like too much to ask of you.</p>
+    <p>I want to yell at you to read my journal. To go through all these words because perhaps, somewhere between these pages, you'll finally understand what I cannot bring myself to say out loud. But even that feels like too much to ask, especially when I'm not entirely ready to confront my own feelings either.</p>
+    <p>And that's the most frustrating part. I have written so much, thought about this endlessly, replayed conversations, questioned my feelings, and argued with myself in a hundred different ways. Yet, if you were standing in front of me right now, I probably wouldn't know where to begin.</p>
+    <p>I miss you. I want you. I'm angry with you. I'm hurt by you. And somehow, none of those feelings seem to cancel the others out.</p>
+    <p>But I also know that if things end here, if we decide not to pursue whatever this is, I cannot keep relying on you the way I have been. I cannot keep looking for you in every little pause in my day, waiting for your name to light up my phone, or finding excuses to have you around.</p>
+    <p>Because if this is going to end, I will eventually have to learn to stop reaching for you.</p>
+    <p class="signoff">And perhaps that's what scares me the most. Not just the possibility of losing you, but the fact that I've already started missing someone I haven't even lost.</p>
+    <div class="tiny-heart">♡ &nbsp; ✿ &nbsp; ♡</div>
+</article>
 
-  <!-- Questions section is inserted here by script -->
-  <section class="questions" id="questions" aria-labelledby="qTitle">
-    <h2 class="q-title" id="qTitle">A few questions for you</h2>
-    <p class="q-sub">Answer honestly. Once you send it, flip the card to see what I said too.</p>
-    <div class="flip-stage" id="flipStage"></div>
-    <div class="q-nav">
-      <button class="arrow" id="prevQ" type="button" aria-label="Previous question">‹</button>
-      <div class="q-counter" id="qCounter" aria-live="polite"></div>
-      <button class="arrow" id="nextQ" type="button" aria-label="Next question">›</button>
-    </div>
-    <div class="q-dots" id="qDots"></div>
-    <p class="q-thanks" id="qThanks">You answered everything. Now I want to hear these out loud. ♡</p>
-  </section>
+  <button class="reset" id="reset" type="button">Fold the letter back up</button>
 
   <div class="footer">made with an intention</div>
 
@@ -515,217 +502,138 @@ h1{font-size:clamp(32px,6vw,52px);font-weight:normal;line-height:1.05;margin:14p
   svg.innerHTML = out + flowers;
 })();
 
-/* ================= QUESTION FLIP CARDS ================= */
+/* ================= MOVIE QUOTE POP-UPS ================= */
 (function () {
-  const EMAIL = "vanshu1802@gmail.com";
-  const ENDPOINT = "https://formsubmit.co/ajax/" + EMAIL;
-  const STORE_KEY = "qcards-answers-v2";
-
-  const QA = [
-    { q: "What's one thing you'd really like us to do together, something simple that you'd enjoy?",
-      a: "I'd really like us to have a quiet night in sometime. We could watch a movie, talk about absolutely anything, or just spend time together without having to do anything in particular. I think I'd enjoy that quite a bit." },
-    { q: "What's something you're looking forward to next year?",
-      a: "My convocation, definitely! I'm quite excited about finally getting to attend it." },
-    { q: "When you have a particularly bad day, what do you usually need from your partner? Someone to listen, distract you, or give you a little space?",
-      a: "I think I'd prefer someone who just listens. I don't necessarily need solutions or advice every time; sometimes, I just want to be able to talk about what's on my mind." },
-    { q: "What's a date you've been wanting to go on with me?",
-      a: "I'd love for us to visit MacRitchie Reservoir one morning. A nice morning walk, a little bit of exploring and just spending time together. I think that would make for a lovely date." },
-    { q: "Apart from trust, what do you think makes a relationship meaningful?",
-      a: "Friendship, without a doubt. I want to be able to look at my partner and see a friend in him too. Someone I can laugh with, talk to about the most random things, share little everyday moments with and genuinely enjoy being around." },
-    { q: "What's something you've come to appreciate about having your own life outside a relationship?",
-      a: "I think it's important that a relationship isn't the only thing going on in either person's life. We should both have our own ambitions, friendships, interests and experiences. Of course, I'd love for my partner to know about the people and things that matter to me, but I don't think we necessarily need to be involved in every single aspect of each other's lives." },
-    { q: "Do you ever worry that when I ask you to come over, it's because I have a particular expectation in mind?",
-      a: "Not at all! I usually just ask you over because I miss having you around. You could be sitting beside me doing your own work, and I'd still be happy. There's something comforting about simply having your presence around, even when we're not actively doing anything together." },
-    { q: "What kind of qualities do you generally find attractive in someone?",
-      a: "I've always found myself drawn to men who can naturally command attention in a room. Someone who's comfortable in the spotlight, confident enough to own it and isn't afraid to put himself out there." },
-    { q: "What's your perspective on people remaining friends with their exes?",
-      a: "Personally, I don't think I'd be able to remain friends with my exes. But I suppose, in general, it depends on the relationship they shared, how things ended and whether both people have genuinely moved on." },
-    { q: "Is there something you've experienced in a past relationship that you'd approach differently in the future?",
-      a: "I think I'd want to be with someone who's genuinely ambitious and driven. It's something that matters quite a bit to me because I believe a person's outlook towards growth and hard work can influence the relationship in many ways. In the past, I've been with people who weren't particularly driven, albeit for different reasons, and I've realised how important shared ambition is to me." },
-    { q: "What's one of the most thoughtful or romantic gestures someone's made for you?",
-      a: "I've been surprised quite a few times, actually. One particular memory that stands out is when I travelled alone for my first hackathon. He showed up to cheer me on, but made sure to head back before I did so I could spend time with the other people there. Then, when I returned, he showed up at the airport at around 1 AM with flowers and food to congratulate me. I think it was the thoughtfulness of it all that made it so memorable." },
-    { q: "Is there a particular criticism or comment that took you a long time to make peace with?",
-      a: "It took me quite a few years to become comfortable with the way I look. Things like my hair, skin tone and body shape were things I struggled to come to terms with for a long time. It's taken time, but I've learnt to be kinder to myself about them." },
-    { q: "Do you have any particular deal-breakers in a relationship?",
-      a: "I wouldn't say I have a very specific checklist of deal-breakers. But there are certain habits and behaviours that just don't sit well with me. Sometimes, it's the little things that give me the ick!" },
-    { q: "Who among your friends would you say knows you the best?",
-      a: "My best friend, Bristti. She probably knows me better than anyone else. There's very little I have to explain to her; she just gets me." },
-    { q: "Do you have a bucket list? What's the most adventurous thing you've ticked off it so far?",
-      a: "I do, but I think I'll save this one for when we meet. It's a story I'd much rather tell you in person. :P" }
+  const QUOTES = [
+    { t: "I love that you get cold when it's 71 degrees out.", f: "When Harry Met Sally (1989)" },
+    { t: "I'm just a girl, standing in front of a boy, asking him to love her.", f: "Notting Hill (1999)" },
+    { t: "You complete me.", f: "Jerry Maguire (1996)" },
+    { t: "But mostly I hate the way I don't hate you.", f: "10 Things I Hate About You (1999)" },
+    { t: "I want the fairy tale.", f: "Pretty Woman (1990)" },
+    { t: "Is it raining? I hadn't noticed.", f: "Four Weddings and a Funeral (1994)" },
+    { t: "I wanna grow old with you.", f: "The Wedding Singer (1998)" },
+    { t: "To me, you are perfect.", f: "Love Actually (2003)" },
+    { t: "I wanted it to be you.", f: "You've Got Mail (1998)" },
+    { t: "I like you, very much. Just as you are.", f: "Bridget Jones's Diary (2001)" },
+    { t: "You, my friend, are meant to be the leading lady of your own life.", f: "The Holiday (2006)" },
+    { t: "You have bewitched me, body and soul.", f: "Pride & Prejudice (2005)" },
+    { t: "If you're a bird, I'm a bird.", f: "The Notebook (2004)" },
+    { t: "I vow to fiercely love you in all your forms.", f: "The Vow (2012)" },
+    { t: "The greatest thing you'll ever learn is just to love and be loved in return.", f: "Moulin Rouge! (2001)" },
+    { t: "I fell in love the way you fall asleep: slowly, and then all at once.", f: "The Fault in Our Stars (2014)" },
+    { t: "Meet me in Montauk.", f: "Eternal Sunshine of the Spotless Mind (2004)" },
+    { t: "Here's to the fools who dream.", f: "La La Land (2016)" },
+    { t: "We accept the love we think we deserve.", f: "The Perks of Being a Wallflower (2012)" },
+    { t: "I love how she makes me feel.", f: "500 Days of Summer (2009)" },
+    { t: "You don't have to understand. You just have to have faith.", f: "Serendipity (2001)" },
+    { t: "Love is like the wind. You can't see it, but you can feel it.", f: "A Walk to Remember (2002)" },
+    { t: "Life is not the amount of breaths you take, it's the moments that take your breath away.", f: "Hitch (2005)" },
+    { t: "I'll never let go, Jack.", f: "Titanic (1997)" },
+    { t: "I feel like I'm in a rom-com!", f: "27 Dresses (2008)" },
+    { t: "I don't need a grand love story. I just want the little moments that make an ordinary day feel extraordinary.", f: "just for you ♡" },
+    { t: "I want to be your favourite notification, your most comfortable silence and the person you look for in a crowded room.", f: "just for you ♡" },
+    { t: "Perhaps home isn't a place. Perhaps it's a person whose presence makes the world feel a little less overwhelming.", f: "just for you ♡" },
+    { t: "If I could choose a thousand different lifetimes, I think I'd still want to find my way to you.", f: "just for you ♡" },
+    { t: "I want a love that feels like being chosen, not occasionally, but every single day.", f: "just for you ♡" }
   ];
 
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch (e) { saved = {}; }
-  function persist() { try { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (e) {} }
+  const POSITIONS = ["pos-tl", "pos-tr", "pos-bl", "pos-br", "pos-ml", "pos-mr"];
+  const FIRST_DELAY = 4000;        // wait before the first pop-up
+  const GAP_MIN = 6000;            // quiet time between pop-ups
+  const GAP_MAX = 14000;
 
-  const stage = document.getElementById("flipStage");
-  const prevBtn = document.getElementById("prevQ");
-  const nextBtn = document.getElementById("nextQ");
-  const counter = document.getElementById("qCounter");
-  const dotsBox = document.getElementById("qDots");
-  const thanks = document.getElementById("qThanks");
+  const pop = document.createElement("aside");
+  pop.className = "quote-pop";
+  pop.setAttribute("role", "status");
+  pop.setAttribute("aria-live", "polite");
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "quote-close";
+  closeBtn.setAttribute("aria-label", "Dismiss quote");
+  closeBtn.textContent = "×";
+  const qText = document.createElement("p");
+  qText.className = "quote-text";
+  const qFilm = document.createElement("p");
+  qFilm.className = "quote-film";
+  pop.appendChild(closeBtn);
+  pop.appendChild(qText);
+  pop.appendChild(qFilm);
+  document.body.appendChild(pop);
 
-  const cards = [];
-  const dots = [];
-  let current = 0;
+  let bag = [];
+  let last = -1;
+  let hideTimer = null;
+  let nextTimer = null;
+  let lastPos = "";
 
-  function el(tag, cls, text) {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    return e;
-  }
-
-  function setFlipped(card, flipped) {
-    card.root.classList.toggle("flipped", flipped);
-    card.front.setAttribute("aria-hidden", flipped ? "true" : "false");
-    card.back.setAttribute("aria-hidden", flipped ? "false" : "true");
-  }
-
-  function markAnswered(card, i) {
-    card.input.value = saved[i];
-    card.input.readOnly = true;
-    card.sendBtn.style.display = "none";
-    card.flipBtn.style.display = "";
-    card.yours.textContent = saved[i];
-    card.status.className = "q-status";
-    card.status.textContent = "Sent ♡ Now flip the card to see my answer.";
-    dots[i].classList.add("answered");
-  }
-
-  function refreshUI() {
-    const n = Object.keys(saved).length;
-    counter.innerHTML = "";
-    counter.appendChild(document.createTextNode((current + 1) + " / " + QA.length));
-    counter.appendChild(el("small", "", n + " answered"));
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === QA.length - 1;
-    dots.forEach((d, idx) => d.classList.toggle("active", idx === current));
-    thanks.classList.toggle("show", n === QA.length);
-  }
-
-  function show(i) {
-    if (i < 0 || i >= QA.length) return;
-    cards[current].root.classList.remove("current");
-    current = i;
-    cards[current].root.classList.add("current");
-    refreshUI();
-  }
-
-  async function send(i) {
-    const card = cards[i];
-    const answer = card.input.value.trim();
-    if (!answer) {
-      card.status.className = "q-status error";
-      card.status.textContent = "Write something first, even a little. ♡";
-      return;
+  function nextQuote() {
+    if (!bag.length) {
+      bag = QUOTES.map(function (_, i) { return i; });
+      for (let i = bag.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = bag[i]; bag[i] = bag[j]; bag[j] = t;
+      }
+      if (bag[bag.length - 1] === last && bag.length > 1) bag.unshift(bag.pop());
     }
-    card.status.className = "q-status";
-    card.status.textContent = "";
-    card.sendBtn.disabled = true;
-    card.sendBtn.textContent = "Sending…";
-
-    try {
-      const res = await fetch(ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          _subject: "Answer to question " + (i + 1) + " of " + QA.length,
-          _template: "table",
-          _captcha: "false",
-          _honey: "",
-          question: QA[i].q,
-          answer: answer
-        })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || String(data.success) === "false") throw new Error(data.message || "Request failed");
-      saved[i] = answer;
-      persist();
-      markAnswered(card, i);
-      refreshUI();
-    } catch (err) {
-      card.status.className = "q-status error";
-      card.status.textContent = "Couldn't send that one. Check your connection and try again. Your answer is still here.";
-      card.sendBtn.disabled = false;
-      card.sendBtn.textContent = "Send my answer ♡";
-    }
+    last = bag.pop();
+    return QUOTES[last];
   }
 
-  QA.forEach(function (item, i) {
-    const root = el("div", "flip");
-    const inner = el("div", "flip-inner");
+  function nextPosition() {
+    let p;
+    do { p = POSITIONS[Math.floor(Math.random() * POSITIONS.length)]; } while (p === lastPos && POSITIONS.length > 1);
+    lastPos = p;
+    return p;
+  }
 
-    const front = el("div", "face front");
-    front.appendChild(el("div", "q-num", "Question " + (i + 1)));
-    front.appendChild(el("p", "q-text", item.q));
+  function schedule(ms) {
+    clearTimeout(nextTimer);
+    nextTimer = setTimeout(show, ms);
+  }
 
-    const input = el("textarea", "q-input");
-    input.placeholder = "Type your answer here…";
-    input.setAttribute("aria-label", "Your answer to question " + (i + 1));
-    front.appendChild(input);
+  function randomGap() {
+    return GAP_MIN + Math.random() * (GAP_MAX - GAP_MIN);
+  }
 
-    const actions = el("div", "q-actions");
-    const sendBtn = el("button", "btn", "Send my answer ♡");
-    sendBtn.type = "button";
-    const flipBtn = el("button", "btn", "Flip to see my answer ↻");
-    flipBtn.type = "button";
-    flipBtn.style.display = "none";
-    actions.appendChild(sendBtn);
-    actions.appendChild(flipBtn);
-    front.appendChild(actions);
+  function show() {
+    if (document.hidden) return;
+    const q = nextQuote();
+    qText.textContent = "“" + q.t + "”";
+    qFilm.textContent = "— " + q.f;
+    POSITIONS.forEach(function (c) { pop.classList.remove(c); });
+    pop.classList.add(nextPosition());
+    pop.classList.add("show");
+    const reading = 5500 + q.t.length * 55;      // longer quotes stay longer
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, reading);
+  }
 
-    const status = el("p", "q-status");
-    status.setAttribute("role", "status");
-    front.appendChild(status);
+  function hide() {
+    clearTimeout(hideTimer);
+    pop.classList.remove("show");
+    schedule(randomGap());
+  }
 
-    const back = el("div", "face back");
-    back.appendChild(el("div", "q-num", "Question " + (i + 1)));
-    back.appendChild(el("p", "q-text", item.q));
-    back.appendChild(el("div", "q-label you", "Your answer"));
-    const yours = el("p", "q-yours");
-    back.appendChild(yours);
-    back.appendChild(el("div", "q-label me", "My answer"));
-    back.appendChild(el("p", "q-mine", item.a));
-    const backActions = el("div", "q-actions");
-    const backBtn = el("button", "btn ghost", "↻ Flip back");
-    backBtn.type = "button";
-    backActions.appendChild(backBtn);
-    back.appendChild(backActions);
+  closeBtn.addEventListener("click", hide);
 
-    inner.appendChild(front);
-    inner.appendChild(back);
-    root.appendChild(inner);
-    stage.appendChild(root);
-
-    const card = { root, front, back, input, sendBtn, flipBtn, status, yours };
-    cards.push(card);
-    setFlipped(card, false);
-
-    sendBtn.addEventListener("click", () => send(i));
-    flipBtn.addEventListener("click", () => setFlipped(card, true));
-    backBtn.addEventListener("click", () => setFlipped(card, false));
-
-    const dot = el("button", "q-dot");
-    dot.type = "button";
-    dot.setAttribute("aria-label", "Go to question " + (i + 1));
-    dot.addEventListener("click", () => show(i));
-    dotsBox.appendChild(dot);
-    dots.push(dot);
-
-    if (saved[i]) markAnswered(card, i);
+  // pause the fade-out while the pointer is over the card
+  pop.addEventListener("mouseenter", function () { clearTimeout(hideTimer); });
+  pop.addEventListener("mouseleave", function () {
+    if (pop.classList.contains("show")) { clearTimeout(hideTimer); hideTimer = setTimeout(hide, 2500); }
   });
 
-  prevBtn.addEventListener("click", () => show(current - 1));
-  nextBtn.addEventListener("click", () => show(current + 1));
+  // don't run in the background tab
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      clearTimeout(hideTimer); clearTimeout(nextTimer);
+      pop.classList.remove("show");
+    } else {
+      schedule(2500);
+    }
+  });
 
-  let start = 0;
-  while (start < QA.length - 1 && saved[start]) start++;
-  current = start;
-  cards[current].root.classList.add("current");
-  refreshUI();
+  schedule(FIRST_DELAY);
 })();
-
 /* ================= ENVELOPES ================= */
 (function () {
   const envelopes = document.querySelectorAll(".envelope-wrap");
